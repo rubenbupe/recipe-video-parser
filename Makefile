@@ -10,7 +10,8 @@ endif
 # Dependencies
 install:
 	go get ./...
-
+	cd playground && \
+	  bun install
 
 # Tests
 test:

@@ -14,4 +14,5 @@ export default defineConfig({
 			'@tabler/icons-react': '@tabler/icons-react/dist/esm/icons/index.mjs',
 		},
 	},
+	envDir: path.resolve(__dirname, '..'),
 })
