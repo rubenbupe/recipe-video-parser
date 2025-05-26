@@ -27,6 +27,14 @@ func ExtractRecipePrompt() string {
         <item>No inventes información que no puedas deducir de forma lógica.</item>
         <item>Ordena los ingredientes por importancia. Normalmente, ingredientes 
         como especias, sal, aceite, etc. irán los últimos.</item>
+        <item>Extrae todas las instrucciones necesarias para preparar la receta,
+        incluyendo pasos opcionales que debes marcar como tal. Las instrucciones deben 
+        referenciar los ingredientes por su nombre y ser comprensibles por sí mismas.</item>
+        <item>Puedes dividir las instrucciones en secciones si la receta consta
+        de varias elaboraciones o etapas distinguidas.</item>
+        <item>Las notas adicionales tipicamente incluyen información como
+        la sugerencia de acompañamientos, consejos de conservación, o
+        recomendaciones de presentación. Incluye esta información si está disponible.</item>
       </tasks>
   
       <!-- ──────────────────────────────── -->
