@@ -266,7 +266,7 @@ export function RecipeCard({ url, name, type, apiKey, index, setName }: { url: s
 						</>
 					)}
 					{!!error && (
-						<div className="flex flex-col justify-center items-center gap-4 flex-1">
+						<div className="flex flex-col justify-center items-center gap-4 flex-1 md:col-span-2">
 							<div className="p-5 rounded-full bg-gradient-to-br from-rose-100 to-red-100 dark:from-rose-700 dark:to-red-700">
 								<div className="bg-gradient-to-br from-rose-500 to-red-500 dark:from-rose-500 dark:to-red-500 rounded-full p-4 shadow-2xl shadow-[inset_0_0_20px_rgba(255,255,255,0.5)]">
 									<IconMoodSadDizzy
