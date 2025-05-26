@@ -85,6 +85,7 @@ func ExtractRecipePrompt() string {
                   "prep_time": "Tiempo de preparación (minutes)",
                   "cook_time": "Tiempo de cocción (minutes)",
                   "total_time": "Tiempo total de la receta (minutes)",
+                  "difficulty": "Dificultad de la receta (1-3)",
                   "ingredients": [
                         {
                               "name": "Nombre del ingrediente",
@@ -121,6 +122,7 @@ func ExtractRecipePrompt() string {
           "prep_time": "number",
           "cook_time": "number",
           "total_time": "number",
+          "difficulty": "number",
           "ingredients": [
             {
               "name": "string",

@@ -1,6 +1,11 @@
 # Recipe Video Parser
 A Golang application that parses recipe videos from various platforms and extracts the recipe details. Tested with YouTube, TikTok, and Instagram.
 
+## Requirements
+- Go 1.23 or later
+- `gallery-dl` and `yt-dlp` for video extraction
+- Bun JS runtime for running the application (optional, for playground)
+
 ## Installation
 1. Install gallery-dl and yt-dlp:
 ```bash
@@ -100,6 +105,8 @@ More information on how to configure `gallery-dl` can be found in the [gallery-d
 ## Environment variables
 
 The application uses the following environment variables (see `.env` or `example.env`):
+
+- `VITE_API_ROOT`: Root URL for the API (e.g., `http://localhost:8080`).
 
 - `APP_PORT`: Port where the HTTP API runs (e.g., 8080).
 - `DB_DATABASE`: Path to the SQLite database file.

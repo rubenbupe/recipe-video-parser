@@ -11,6 +11,7 @@ import (
 
 	"github.com/gin-gonic/gin"
 	recipesroutes "github.com/rubenbupe/recipe-video-parser/internal/recipes/platform/server/routes"
+	"github.com/rubenbupe/recipe-video-parser/internal/shared/platform/server/middleware"
 	"github.com/rubenbupe/recipe-video-parser/internal/shared/platform/server/middleware/logging"
 	"github.com/rubenbupe/recipe-video-parser/internal/shared/platform/server/middleware/recovery"
 	statusroutes "github.com/rubenbupe/recipe-video-parser/internal/status/platform/server/routes"
@@ -40,6 +41,7 @@ func New(ctx context.Context, host string, port uint, shutdownTimeout time.Durat
 
 func (s *Server) registerRoutes() {
 	s.engine.Use(recovery.Middleware(), logging.Middleware())
+	s.engine.Use(middleware.CORSMiddleware())
 
 	status := s.engine.Group("/status")
 	recipes := s.engine.Group("/recipes")

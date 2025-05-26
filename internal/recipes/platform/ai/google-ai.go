@@ -160,6 +160,7 @@ type Recipe struct {
 	PrepTime        int             `json:"prep_time"`
 	CookTime        int             `json:"cook_time"`
 	TotalTime       int             `json:"total_time"`
+	Difficulty      int             `json:"difficulty" validate:"required"`
 	Ingredients     []Ingredient    `json:"ingredients" validate:"required"`
 	Sections        []Section       `json:"sections" validate:"required"`
 	Notes           string          `json:"notes"`
@@ -268,6 +269,7 @@ func FormatToMarkdown(aiResponse AiResponse) string {
 		b.WriteString(recipe.Description + "\n\n")
 	}
 	b.WriteString(fmt.Sprintf("**Porciones:** %d\n", recipe.Servings))
+	b.WriteString(fmt.Sprintf("**Dificultad:** %d\n", recipe.Difficulty))
 	b.WriteString(fmt.Sprintf("**Tiempo de preparación:** %d min\n", recipe.PrepTime))
 	b.WriteString(fmt.Sprintf("**Tiempo de cocción:** %d min\n", recipe.CookTime))
 	b.WriteString(fmt.Sprintf("**Tiempo total:** %d min\n\n", recipe.TotalTime))

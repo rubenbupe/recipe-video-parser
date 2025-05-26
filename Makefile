@@ -41,6 +41,10 @@ cli:
 dev:
 	$(ENV_LOAD); go run ./cmd/dev/main.go $(filter-out $@,$(MAKECMDGOALS))
 
+playground:
+	$(ENV_LOAD); cd playground && \
+	  bun dev
+
 
 # Deployment
 build-cli:
@@ -49,11 +53,16 @@ build-cli:
 build-api:
 	CGO_ENABLED=0 go build -o bin/api cmd/api/main.go
 
+build-playground:
+	$(ENV_LOAD); cd playground && \
+	  bun run build
+
 build:
 	$(MAKE) build-api
 	$(MAKE) build-cli
+	$(MAKE) build-playground
 
 %::
 	@true
 
-.PHONY: install test test-json coverage lint dev run cli dev-cli build-api build-cli build
+.PHONY: install test test-json coverage lint dev run cli dev-cli build-api build-cli build-playground build playground
