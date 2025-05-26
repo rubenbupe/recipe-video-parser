@@ -164,7 +164,7 @@ type Recipe struct {
 	Sections        []Section       `json:"sections" validate:"required"`
 	Notes           string          `json:"notes"`
 	NutritionalInfo NutritionalInfo `json:"nutritional_info"`
-	Url             string          `json:"-"`
+	Url             string          `json:"url"`
 }
 type Ingredient struct {
 	Name     string `json:"name" validate:"required"`
@@ -314,7 +314,36 @@ func FormatToMarkdown(aiResponse AiResponse) string {
 	return b.String()
 }
 
-func AskModel(download gallery.DownloadResult, config ai.Aiconfig) (AiResponse, error) {
+func askModelRequest(payload map[string]interface{}, config ai.Aiconfig) (AiResponse, error) {
+	jsonPayload, err := json.Marshal(payload)
+	if err != nil {
+		return AiResponse{}, fmt.Errorf("could not marshal payload: %w", err)
+	}
+
+	url := "https://generativelanguage.googleapis.com/v1beta/models/" + config.Model + ":generateContent?key=" + config.ApiKey
+	resp, err := http.Post(url, "application/json", bytes.NewBuffer(jsonPayload))
+	if err != nil {
+		return AiResponse{}, fmt.Errorf("request failed: %w", err)
+	}
+	defer resp.Body.Close()
+
+	body, err := io.ReadAll(resp.Body)
+	if err != nil {
+		return AiResponse{}, fmt.Errorf("could not read response: %w", err)
+	}
+
+	if resp.StatusCode != 200 {
+		return AiResponse{}, fmt.Errorf("error: %s, body: %s", resp.Status, string(body))
+	}
+
+	parsedResponse, err := parseGoogleAIResponse(string(body))
+	if err != nil {
+		return AiResponse{}, fmt.Errorf("error parsing AI response: %w", err)
+	}
+	return parsedResponse, nil
+}
+
+func AskModelWithFile(download gallery.DownloadResult, config ai.Aiconfig) (AiResponse, error) {
 	filePath := download.FilePath
 	if !filepath.IsAbs(filePath) {
 		filePath = filepath.Join("tmp/dl", filePath)
@@ -358,31 +387,42 @@ func AskModel(download gallery.DownloadResult, config ai.Aiconfig) (AiResponse, 
 		},
 	}
 
-	jsonPayload, err := json.Marshal(payload)
-	if err != nil {
-		return AiResponse{}, fmt.Errorf("could not marshal payload: %w", err)
+	resp, err := askModelRequest(payload, config)
+	if err == nil {
+		resp.Recipe.Url = download.Url
 	}
+	return resp, err
+}
 
-	url := "https://generativelanguage.googleapis.com/v1beta/models/" + config.Model + ":generateContent?key=" + config.ApiKey
-	resp, err := http.Post(url, "application/json", bytes.NewBuffer(jsonPayload))
-	if err != nil {
-		return AiResponse{}, fmt.Errorf("request failed: %w", err)
+func AskModelWithUrl(urlStr string, config ai.Aiconfig) (AiResponse, error) {
+	prompt := ExtractRecipePrompt()
+	payload := map[string]interface{}{
+		"generation_config": map[string]interface{}{
+			"response_mime_type": "application/json",
+			"temperature":        config.Temperature,
+		},
+		"system_instruction": map[string]interface{}{
+			"parts": []interface{}{
+				map[string]interface{}{
+					"text": prompt,
+				},
+			},
+		},
+		"contents": []interface{}{
+			map[string]interface{}{
+				"parts": []interface{}{
+					map[string]interface{}{
+						"file_data": map[string]interface{}{
+							"file_uri": urlStr,
+						},
+					},
+				},
+			},
+		},
 	}
-	defer resp.Body.Close()
-
-	body, err := io.ReadAll(resp.Body)
-	if err != nil {
-		return AiResponse{}, fmt.Errorf("could not read response: %w", err)
+	resp, err := askModelRequest(payload, config)
+	if err == nil {
+		resp.Recipe.Url = urlStr
 	}
-
-	if resp.StatusCode != 200 {
-		return AiResponse{}, fmt.Errorf("error: %s, body: %s", resp.Status, string(body))
-	}
-
-	parsedResponse, err := parseGoogleAIResponse(string(body))
-	if err != nil {
-		return AiResponse{}, fmt.Errorf("error parsing AI response: %w", err)
-	}
-	parsedResponse.Recipe.Url = download.Url
-	return parsedResponse, nil
+	return resp, err
 }

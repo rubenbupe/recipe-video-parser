@@ -1,5 +1,5 @@
 # Recipe Video Parser
-A Golang application that parses recipe videos from various platforms and extracts the recipe details.
+A Golang application that parses recipe videos from various platforms and extracts the recipe details. Tested with YouTube and TikTok.
 
 ## Installation
 1. Install gallery-dl and yt-dlp:
