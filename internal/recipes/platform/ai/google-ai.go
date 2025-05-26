@@ -180,12 +180,12 @@ type Instruction struct {
 	Text     string `json:"text" validate:"required"`
 }
 type NutritionalInfo struct {
-	Calories      int `json:"calories"`
-	Protein       int `json:"protein"`
-	Carbohydrates int `json:"carbohydrates"`
-	Fats          int `json:"fats"`
-	Fiber         int `json:"fiber"`
-	Sugar         int `json:"sugar"`
+	Calories      float64 `json:"calories"`
+	Protein       float64 `json:"protein"`
+	Carbohydrates float64 `json:"carbohydrates"`
+	Fats          float64 `json:"fats"`
+	Fiber         float64 `json:"fiber"`
+	Sugar         float64 `json:"sugar"`
 }
 
 func parseGoogleAIResponse(apiResponse string) (AiResponse, error) {
