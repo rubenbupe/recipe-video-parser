@@ -5,21 +5,24 @@ import (
 	"fmt"
 	"os"
 	"os/exec"
-	"path/filepath"
 	"strings"
 )
 
 type DownloadResult struct {
 	FilePath    string
 	Url         string
-	PublicUrl   string
 	Extension   string
 	MimeType    string
 	Description string
 }
 
-func DownloadFile(url, id, downloadDir, publicUrl string) (DownloadResult, error) {
-	cmd := exec.Command("gallery-dl", "--write-metadata", "-D", downloadDir, "-f", fmt.Sprintf("%s.{extension}", id), url)
+func DownloadFile(url, id, downloadDir, configFile string) (DownloadResult, error) {
+	args := []string{"--write-metadata", "-D", downloadDir, "-f", fmt.Sprintf("%s.{extension}", id)}
+	if configFile != "" {
+		args = append(args, "-c", configFile)
+	}
+	args = append(args, url)
+	cmd := exec.Command("gallery-dl", args...)
 	output, err := cmd.CombinedOutput()
 	if err != nil {
 		return DownloadResult{}, fmt.Errorf("failed to download video: %w, details: %s", err, output)
@@ -30,8 +33,6 @@ func DownloadFile(url, id, downloadDir, publicUrl string) (DownloadResult, error
 	if filePath == "" {
 		return DownloadResult{}, fmt.Errorf("video file not found after download")
 	}
-
-	fileName := strings.TrimSuffix(filepath.Base(filePath), filepath.Ext(filePath))
 
 	jsonPath := filePath + ".json"
 	jsonFile, err := os.ReadFile(jsonPath)
@@ -55,7 +56,12 @@ func DownloadFile(url, id, downloadDir, publicUrl string) (DownloadResult, error
 				}
 			}
 			desc = strings.Join(descs, "\n")
+		} else if d, ok := meta["desc"].(string); ok {
+			desc = d
+		} else if d, ok := meta["description"].(string); ok {
+			desc = d
 		}
+
 		if d, ok := meta["extension"].(string); ok {
 			extension = d
 		} else {
@@ -68,7 +74,6 @@ func DownloadFile(url, id, downloadDir, publicUrl string) (DownloadResult, error
 	return DownloadResult{
 		FilePath:    filePath,
 		Url:         url,
-		PublicUrl:   publicUrl + "/" + fileName + "." + extension,
 		Extension:   extension,
 		MimeType:    "video/" + extension,
 		Description: desc,

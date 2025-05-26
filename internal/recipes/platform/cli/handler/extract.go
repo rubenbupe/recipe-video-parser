@@ -27,7 +27,7 @@ func ExtractRecipe(url string, galleryConfig *gallery.Galleryconfig, aiConfig *s
 	var res ai.AiResponse
 	var err error
 	if needsDownload(url) {
-		downloaded, errDownload := gallerydl.DownloadFile(url, id, galleryConfig.DownloadDir, galleryConfig.PublicUrl)
+		downloaded, errDownload := gallerydl.DownloadFile(url, id, galleryConfig.DownloadDir, galleryConfig.ConfigFile)
 		if errDownload != nil {
 			return ai.AiResponse{}, id, fmt.Errorf("failed to download file: %w", errDownload)
 		}

@@ -16,5 +16,5 @@ func CreateConfig() (*Galleryconfig, error) {
 
 type Galleryconfig struct {
 	DownloadDir string `default:"./tmp"`
-	PublicUrl   string `default:"http://localhost:8080"`
+	ConfigFile  string ``
 }

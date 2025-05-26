@@ -1,5 +1,5 @@
 # Recipe Video Parser
-A Golang application that parses recipe videos from various platforms and extracts the recipe details. Tested with YouTube and TikTok.
+A Golang application that parses recipe videos from various platforms and extracts the recipe details. Tested with YouTube, TikTok, and Instagram.
 
 ## Installation
 1. Install gallery-dl and yt-dlp:
@@ -30,7 +30,7 @@ make build
   ```bash
   ./bin/cli extract-recipe <video_url>
   ```
-  Extracts the recipe in JSON format from the given URL (YouTube, TikTok, etc).
+  Extracts the recipe in JSON format from the given URL (YouTube, TikTok, Instagram, etc).
 
 - Create user:
   ```bash
@@ -72,6 +72,27 @@ All API requests must include the API key in the `Authorization` header using th
 Authorization: Bearer <API_KEY>
 ```
 
+## Videos with login requirements
+For platforms that require login (like Instagram), you can specify a custom `gallery-dl` configuration file in the `.env` file:
+
+```env
+GALLERY_CONFIGFILE=/path/to/your/gallery-dl.conf
+```
+
+Sample `gallery-dl.conf` for Instagram:
+```json
+{
+		"extractor": {
+				"instagram": {
+						"cookies": "/path/to/your/instagram_cookies.txt",
+				}
+		}
+}
+```
+
+You can obtain the cookies file using browser extensions. More information on how to obtain cookies can be found in the [gallery-dl documentation](https://github.com/mikf/gallery-dl?tab=readme-ov-file#cookies).
+
+More information on how to configure `gallery-dl` can be found in the [gallery-dl documentation](https://gdl-org.github.io/docs/configuration.html)
+
 ## TODO
-- [ ] Add support for platforms that require authentication.
 - [ ] Implement a web interface for easier access.
