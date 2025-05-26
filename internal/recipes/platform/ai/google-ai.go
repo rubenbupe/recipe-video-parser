@@ -302,12 +302,12 @@ func FormatToMarkdown(aiResponse AiResponse) string {
 	}
 
 	b.WriteString("## Información nutricional (por cada 100g)\n")
-	b.WriteString(fmt.Sprintf("- Calorías: %d kcal\n", recipe.NutritionalInfo.Calories))
-	b.WriteString(fmt.Sprintf("- Proteínas: %d g\n", recipe.NutritionalInfo.Protein))
-	b.WriteString(fmt.Sprintf("- Carbohidratos: %d g\n", recipe.NutritionalInfo.Carbohydrates))
-	b.WriteString(fmt.Sprintf("- Grasas: %d g\n", recipe.NutritionalInfo.Fats))
-	b.WriteString(fmt.Sprintf("- Fibra: %d g\n", recipe.NutritionalInfo.Fiber))
-	b.WriteString(fmt.Sprintf("- Azúcares: %d g\n", recipe.NutritionalInfo.Sugar))
+	b.WriteString(fmt.Sprintf("- Calorías: %.0f kcal\n", recipe.NutritionalInfo.Calories))
+	b.WriteString(fmt.Sprintf("- Proteínas: %.0f g\n", recipe.NutritionalInfo.Protein))
+	b.WriteString(fmt.Sprintf("- Carbohidratos: %.0f g\n", recipe.NutritionalInfo.Carbohydrates))
+	b.WriteString(fmt.Sprintf("- Grasas: %.0f g\n", recipe.NutritionalInfo.Fats))
+	b.WriteString(fmt.Sprintf("- Fibra: %.0f g\n", recipe.NutritionalInfo.Fiber))
+	b.WriteString(fmt.Sprintf("- Azúcares: %.0f g\n", recipe.NutritionalInfo.Sugar))
 
 	if recipe.Url != "" {
 		b.WriteString("\n[Ver receta original](" + recipe.Url + ")\n")
