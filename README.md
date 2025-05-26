@@ -12,7 +12,7 @@ python3 -m pip install -U gallery-dl yt-dlp
 ```bash
 make install
 ```
-4. Set the environment variables using `example.env` as a template
+4. Set the environment variables using `example.env` as a template. See more in the [Environment variables](#environment-variables) section below.
 
 5. Build the application:
 ```bash
@@ -96,3 +96,18 @@ More information on how to configure `gallery-dl` can be found in the [gallery-d
 
 ## TODO
 - [ ] Implement a web interface for easier access.
+
+## Environment variables
+
+The application uses the following environment variables (see `.env` or `example.env`):
+
+- `APP_PORT`: Port where the HTTP API runs (e.g., 8080).
+- `DB_DATABASE`: Path to the SQLite database file.
+- `GALLERY_DOWNLOADDIR`: Directory where videos are temporarily downloaded.
+- `GALLERY_CONFIGFILE`: Path to the gallery-dl configuration file (e.g., for Instagram cookies).
+- `AI_PROVIDER`: AI provider to use (e.g., `google`).
+- `AI_APIKEY`: API key for the AI provider.
+- `AI_MODEL`: AI model to use (e.g., `gemini-2.0-flash`).
+- `AI_TEMPERATURE`: Temperature for the AI model (controls creativity, decimal value).
+
+Make sure to copy `example.env` to `.env` and adjust the values for your environment before running the application.
