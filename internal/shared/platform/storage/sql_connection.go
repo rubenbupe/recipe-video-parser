@@ -4,7 +4,7 @@ import (
 	"database/sql"
 	"time"
 
-	_ "github.com/mattn/go-sqlite3"
+	_ "modernc.org/sqlite"
 )
 
 type Connection struct {
@@ -18,7 +18,7 @@ func CreateConnection(name string, cfg *Dbconfig) (*Connection, error) {
 		cfg.Database += ".db"
 	}
 	dsn := cfg.Database
-	db, err := sql.Open("sqlite3", dsn)
+	db, err := sql.Open("sqlite", dsn)
 	if err != nil {
 		return nil, err
 	}

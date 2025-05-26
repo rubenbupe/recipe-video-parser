@@ -8,7 +8,7 @@ import (
 	"path/filepath"
 	"syscall"
 
-	_ "github.com/mattn/go-sqlite3"
+	_ "modernc.org/sqlite"
 	"github.com/rubenbupe/recipe-video-parser/internal/shared/platform/storage"
 )
 
