@@ -106,7 +106,7 @@ func ExtractRecipePrompt() string {
                               "instructions": [
                                     {
                                           "optional": "Si es un paso opcional, usar true, si es obligatorio usar false",
-                                          "text": "Instrucción detallada del paso 1"
+                                          "text": "Instrucción detallada con referencias a los ingredientes por su nombre. Debe ser clara y comprensible por sí misma."
                                     }
                               ],
                         }
