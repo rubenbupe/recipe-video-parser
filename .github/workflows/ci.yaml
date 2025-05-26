@@ -33,10 +33,10 @@ jobs:
                   go-version: ${{ matrix.go-version }}
             - name: Display Go version
               run: go version
-            - name: Install Bun
-              run: |
-                  curl -fsSL https://bun.sh/install | bash -s "bun-v1.2.14"
-                  export PATH="$HOME/.bun/bin:$PATH"
+            - name: Setup Bun
+              uses: oven-sh/setup-bun@v2
+              with:
+                  bun-version: 1.2.14
             - name: Install dependencies
               run: |
                   make install
