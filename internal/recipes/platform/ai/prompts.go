@@ -60,7 +60,9 @@ func ExtractRecipePrompt() string {
         copiar el tono y formato del vídeo o su descripción. Para ingredientes, 
         usa unidades de medida del sistema métrico (gramos, mililitros, etc.) y 
         cantidades precisas. Si el vídeo menciona ingredientes en otras unidades,
-        conviértelos.
+        conviértelos. En las instrucciones, evita expresiones como "añade los ingredientes
+        a la olla" y usa "añade <nombre del ingrediente(s)> a la olla", refiriéndote
+        a los ingredientes por su nombre exacto.
       </style_adaptation>
   
       <!-- ──────────────────────────────── -->
