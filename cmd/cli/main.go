@@ -116,15 +116,15 @@ func getUserCmd(ctx context.Context, args []string) {
 	getHandler := diContainer.Container.Get("users.infrastructure.cli.get").(userhandlers.GetUserHandler)
 
 	if len(args) < 1 {
-		fmt.Println("Uso: cli get-user <id>")
+		fmt.Println("Uso: cli get-user <username>")
 		os.Exit(1)
 	}
-	userId := args[0]
+	userName := args[0]
 
 	result, err := getHandler(
 		ctx,
 		userhandlers.GetUserInput{
-			Name: userId,
+			Name: userName,
 		},
 	)
 	if err != nil {
