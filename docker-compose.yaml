@@ -1,0 +1,11 @@
+version: '3.8'
+
+services:
+  api:
+    profiles:
+      - prod
+    build: .
+    environment:
+      APP_HOST: 0.0.0.0
+    ports:
+      - 8080:8080

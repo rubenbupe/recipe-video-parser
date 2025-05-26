@@ -1,0 +1,14 @@
+# Common files to ignore
+.DS_Store
+.vscode/
+.idea/
+
+# Temporary files
+tmp
+bin
+
+# Environment files
+.env
+
+# Database files
+*.db
