@@ -64,4 +64,12 @@ var Defs = []di.Def{
 			return recipesclihandlers.CreateGetExtractionsHandler(queryBus), nil
 		},
 	},
+	{
+		Name: "recipes.infrastructure.cli.extract",
+		Build: func(ctn di.Container) (interface{}, error) {
+			galleryConfig := ctn.Get("shared.infrastructure.galleryconfig").(*gallery.Galleryconfig)
+			aiConfig := ctn.Get("shared.infrastructure.aiconfig").(*ai.Aiconfig)
+			return recipesclihandlers.NewExtractRecipeHandler(galleryConfig, aiConfig), nil
+		},
+	},
 }

@@ -2,17 +2,14 @@ package handlers
 
 import (
 	"encoding/json"
-	"fmt"
 	"net/http"
 	"strings"
 	"time"
 
 	"github.com/gin-gonic/gin"
-	"github.com/google/uuid"
-
 	"github.com/rubenbupe/recipe-video-parser/internal/recipes/application/create"
 	googleai "github.com/rubenbupe/recipe-video-parser/internal/recipes/platform/ai"
-	gallerydl "github.com/rubenbupe/recipe-video-parser/internal/recipes/platform/gallery"
+	clihandlers "github.com/rubenbupe/recipe-video-parser/internal/recipes/platform/cli/handler"
 	"github.com/rubenbupe/recipe-video-parser/internal/shared/platform/ai"
 	"github.com/rubenbupe/recipe-video-parser/internal/shared/platform/gallery"
 	"github.com/rubenbupe/recipe-video-parser/internal/users/domain"
@@ -64,21 +61,14 @@ func handleExtractionResult(ctx *gin.Context, res googleai.AiResponse, id string
 	ctx.JSON(http.StatusOK, res)
 }
 
-func extractWithUrl(aiconfig *ai.Aiconfig, commandBus command.Bus) gin.HandlerFunc {
+func extractWithUrl(galleryconfig *gallery.Galleryconfig, aiconfig *ai.Aiconfig, commandBus command.Bus) gin.HandlerFunc {
 	return func(ctx *gin.Context) {
 		url := ctx.Query("url")
-		if url == "" {
-			ctx.JSON(http.StatusBadRequest, gin.H{"error": "url query parameter is required"})
-			return
-		}
-
-		id := uuid.New().String()
-		res, err := googleai.AskModelWithUrl(url, *aiconfig)
+		res, id, err := clihandlers.ExtractRecipe(url, galleryconfig, aiconfig)
 		if err != nil {
-			ctx.JSON(http.StatusInternalServerError, gin.H{"error": "failed to process url with AI model: " + err.Error()})
+			ctx.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
 			return
 		}
-
 		handleExtractionResult(ctx, res, id, commandBus)
 	}
 }
@@ -86,28 +76,11 @@ func extractWithUrl(aiconfig *ai.Aiconfig, commandBus command.Bus) gin.HandlerFu
 func extractWithDownloadedFile(galleryconfig *gallery.Galleryconfig, aiconfig *ai.Aiconfig, commandBus command.Bus) gin.HandlerFunc {
 	return func(ctx *gin.Context) {
 		url := ctx.Query("url")
-		if url == "" {
-			ctx.JSON(http.StatusBadRequest, gin.H{"error": "url query parameter is required"})
-			return
-		}
-
-		id := uuid.New().String()
-		downloaded, err := gallerydl.DownloadFile(url, id, galleryconfig.DownloadDir, galleryconfig.PublicUrl)
+		res, id, err := clihandlers.ExtractRecipe(url, galleryconfig, aiconfig)
 		if err != nil {
-			// Log the error for debugging purposes
-			fmt.Printf("Error downloading file: %s\n", err.Error())
-			ctx.JSON(http.StatusInternalServerError, gin.H{"error": "failed to download file: " + err.Error()})
+			ctx.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
 			return
 		}
-
-		res, err := googleai.AskModelWithFile(downloaded, *aiconfig)
-
-		gallerydl.RemoveFile(downloaded.FilePath)
-		if err != nil {
-			ctx.JSON(http.StatusInternalServerError, gin.H{"error": "failed to process file with AI model: " + err.Error()})
-			return
-		}
-
 		handleExtractionResult(ctx, res, id, commandBus)
 	}
 }
@@ -123,7 +96,7 @@ func ExtractHandler(galleryconfig *gallery.Galleryconfig, aiconfig *ai.Aiconfig,
 		if needsDownload(url) {
 			extractWithDownloadedFile(galleryconfig, aiconfig, commandBus)(ctx)
 		} else {
-			extractWithUrl(aiconfig, commandBus)(ctx)
+			extractWithUrl(galleryconfig, aiconfig, commandBus)(ctx)
 		}
 	}
 }

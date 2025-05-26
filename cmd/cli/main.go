@@ -51,6 +51,8 @@ func main() {
 		getUserCmd(ctx, os.Args[2:])
 	case "get-user-summary":
 		getExtractionsSummaryCmd(ctx, os.Args[2:])
+	case "extract-recipe":
+		extractRecipeCmd(ctx, os.Args[2:])
 	default:
 		fmt.Printf("Comando desconocido: %s\n", os.Args[1])
 		os.Exit(1)
@@ -203,6 +205,23 @@ func getExtractionsSummaryCmd(ctx context.Context, args []string) {
 	for _, sum := range summaries {
 		fmt.Printf("%-10s | %-12d | %-15d | %-18d | %-15d\n",
 			sum.Month, sum.Count, sum.PromptTokenCount, sum.CandidatesTokenCount, sum.TotalTokenCount)
+	}
+	os.Exit(0)
+}
+
+func extractRecipeCmd(ctx context.Context, args []string) {
+	extractHandler := diContainer.Container.Get("recipes.infrastructure.cli.extract").(extractionhandlers.ExtractRecipeHandler)
+
+	if len(args) < 1 {
+		fmt.Println("Uso: cli extract-recipe <url>")
+		os.Exit(1)
+	}
+	url := args[0]
+
+	err := extractHandler(ctx, extractionhandlers.ExtractRecipeInput{Url: url})
+	if err != nil {
+		fmt.Printf("Error al extraer receta: %v\n", err)
+		os.Exit(1)
 	}
 	os.Exit(0)
 }
