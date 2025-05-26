@@ -50,9 +50,11 @@ playground:
 # Deployment
 build-cli:
 	CGO_ENABLED=0 go build -o bin/cli cmd/cli/main.go
+	chmod +x bin/cli
 
 build-api:
 	CGO_ENABLED=0 go build -o bin/api cmd/api/main.go
+	chmod +x bin/api
 
 build-playground:
 	$(ENV_LOAD); cd playground && \
