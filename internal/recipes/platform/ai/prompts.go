@@ -101,7 +101,7 @@ func ExtractRecipePrompt() string {
                         {
                               "name": "Nombre del ingrediente",
                               "quantity": "Cantidad del ingrediente (1, 2, 3, 1/2, 1/4, etc.). Usar fracciones cuando sea posible.",
-                              "unit": "Unidad de medida (símbolo o abreviatura cuando sea posible) [gr, ml, l, kg, ud, cdta, cda, etc.]",
+                              "unit": "Unidad de medida (símbolo o abreviatura cuando sea posible) [g, ml, l, kg, ud, cdta, cda, etc.]",
                               "optional": "Si es un ingrediente opcional, usar true, si es obligatorio usar false"
                         }
                   ],
