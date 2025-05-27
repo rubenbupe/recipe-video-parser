@@ -171,6 +171,7 @@ type Ingredient struct {
 	Name     string `json:"name" validate:"required"`
 	Quantity string `json:"quantity" validate:"required"`
 	Unit     string `json:"unit" validate:"required"`
+  Optional bool   `json:"optional"`
 }
 type Section struct {
 	Instructions []Instruction `json:"instructions" validate:"required"`
@@ -276,7 +277,11 @@ func FormatToMarkdown(aiResponse AiResponse) string {
 
 	b.WriteString("## Ingredientes\n")
 	for _, ing := range recipe.Ingredients {
-		b.WriteString(fmt.Sprintf("- %s %s %s\n", ing.Quantity, ing.Unit, ing.Name))
+		if ing.Optional {
+			b.WriteString(fmt.Sprintf("- %s %s %s (Opcional)\n", ing.Quantity, ing.Unit, ing.Name))
+		} else {
+			b.WriteString(fmt.Sprintf("- %s %s %s\n", ing.Quantity, ing.Unit, ing.Name))
+		}
 	}
 	b.WriteString("\n")
 
