@@ -7,9 +7,10 @@ A Golang application that parses recipe videos from various platforms and extrac
 - Bun JS runtime for running the application (optional, for playground)
 
 ## Installation
-1. Install gallery-dl and yt-dlp:
+1. Install gallery-dl, yt-dlp, and ffmpeg:
 ```bash
 python3 -m pip install -U gallery-dl yt-dlp
+sudo apt install ffmpeg
 ```
 2. Clone the repository
 
