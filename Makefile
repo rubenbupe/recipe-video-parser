@@ -10,6 +10,8 @@ endif
 # Dependencies
 install:
 	go get ./...
+
+install-playground:
 	cd playground && \
 	  bun install
 
@@ -71,4 +73,4 @@ start-api:
 %::
 	@true
 
-.PHONY: install test test-json coverage lint dev run cli dev-cli build-api build-cli build-playground build playground
+.PHONY: install install-playground test test-json coverage lint dev run cli dev-cli build-api build-cli build-playground build playground
