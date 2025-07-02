@@ -11,7 +11,7 @@ FROM alpine:latest
 WORKDIR /go
 # Install curl, python3, pip, ffmpeg, gallery-dl, and yt-dlp
 RUN apk add --no-cache curl python3 py3-pip ffmpeg \
-    && pip install --no-cache-dir gallery-dl yt-dlp
+	&& pip install --no-cache-dir --break-system-packages gallery-dl yt-dlp
 COPY --from=build /go/src/github.com/rubenbupe/recipe-video-parser/bin/api /go/bin/api
 COPY --from=build /go/src/github.com/rubenbupe/recipe-video-parser/bin/cli /go/bin/cli
 
