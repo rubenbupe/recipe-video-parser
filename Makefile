@@ -65,7 +65,6 @@ build-playground:
 build:
 	$(MAKE) build-api
 	$(MAKE) build-cli
-	$(MAKE) build-playground
 
 start-api:
 	$(ENV_LOAD); ./bin/api
